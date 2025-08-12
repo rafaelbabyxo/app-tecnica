@@ -1,0 +1,13 @@
+{
+  "name": "app-tecnica-monorepo",
+  "version": "1.0.0", 
+  "description": "Monorepo for app tecnica",
+  "scripts": {
+    "build": "./build.sh",
+    "start": "cd server && npm run start:prod",
+    "dev": "cd server && npm run start:dev"
+  },
+  "engines": {
+    "node": "18.17.1"
+  }
+}
