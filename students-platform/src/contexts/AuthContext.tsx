@@ -21,7 +21,6 @@ export type Student = {
   driverLicenseCategoryId?: string
   schoolId: string
   enrolledAt: string
-  firebaseTokens?: string[]
 }
 
 type LoginData = {
