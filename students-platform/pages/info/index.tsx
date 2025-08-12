@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { useQuery } from '@tanstack/react-query'
@@ -36,30 +36,9 @@ interface School {
   createdAt: string;
 }
 
-interface Installment {
-  id: string
-  createdAt: string;
-  valueOfAnInstallment: number
-  amountOfInstallments: number
-  amountOfInstallmentsPaid: number
-  amountOfRemainingInstallments: number
-  paymentId: string
-}
-
-interface Payment {
-  id: string
-  method: "INSTALLMENTS" | "INCASH"
-  total: number
-  amountOfInstallments?: number
-  amountOfInstallmentsPaid?: number
-  amountOfRemainingInstallments?: number
-  installments?: Installment[]
-}
-
 interface StudentInfo {
   test: Test[]
   school: School
-  payment: Payment
   info?: Information[]
 }
 
@@ -70,33 +49,28 @@ export default function Info() {
   const router = useRouter()
   const { student } = useAuth()
   const { toast } = useToast()
+  const [mounted, setMounted] = useState(false)
+
+  // Ensure component is mounted (client-side only)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const { data: studentInfo, isLoading } = useQuery<StudentInfo>(['information'], async () => {
     try {
       const [
         { data: testData },
         { data: schoolData },
-        { data: paymentData },
         { data: infoData }
       ] = await Promise.all([
         server.get(`/test/student/${student?.id}`),
         server.get(`/school/${student?.schoolId}`),
-        server.get(`/payment/${student?.paymentId}`),
         server.get(`/information/school/${student?.schoolId}`)
       ])
-
-      const paymentInfo = {
-        ...paymentData.payment,
-        total: Intl.NumberFormat('en-DE', {
-          style: 'currency',
-          currency: 'EUR',
-        }).format(paymentData.payment.total / 100)
-      }
 
       const studentInfo = {
         ...testData,
         ...schoolData,
-        payment: paymentInfo,
         info: infoData.information
       }
 
@@ -109,13 +83,7 @@ export default function Info() {
             description: "Por favor entre em contado com o administrador",
             variant: 'destructive'
           })
-        } else if (error.response?.data.message === errorMessages.paymentNotFound) {
-          toast({
-            title: "Informações do pagamento não encontradas",
-            description: "Por favor entre em contado com o administrador",
-            variant: 'destructive'
-          })
-          } else {
+        } else {
           toast({
             title: "Ops! Erro no servidor",
             description: "Tente novamente mais tarde",
@@ -125,18 +93,18 @@ export default function Info() {
       }
     }
   }, {
-    enabled: !!student
+    enabled: !!student && mounted
   })
 
   // Client-side authentication check
   useEffect(() => {
-    if (!student) {
+    if (mounted && !student) {
       router.push('/')
     }
-  }, [student, router])
+  }, [student, router, mounted])
 
-  // Show loading while checking authentication
-  if (!student) {
+  // Show loading while checking authentication or mounting
+  if (!mounted || !student) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div>Carregando...</div>
@@ -268,36 +236,6 @@ export default function Info() {
                 </div>
               ))}
             </div>
-          )}
-        </div>
-
-        <div className="mt-6">
-          <p className="text-base font-bold">Pagamentos Pendentes</p>
-
-          <div className="mb-2 mt-1 h-[1px] w-full bg-[#EBEBEB]" />
-
-          {isLoading ? (
-            <>
-              <Spinner size={20} className='animate-spin'/>
-            </>
-          ) : (
-            <>
-              <p className="font-regular text-sm mb-5">
-                {studentInfo?.payment.method === 'INCASH' && `Pagamento de ${studentInfo.payment.total} realizado com sucesso`}
-                {
-                  studentInfo?.payment.method === 'INSTALLMENTS'
-                  && studentInfo?.payment?.amountOfInstallments && studentInfo?.payment?.amountOfInstallmentsPaid && studentInfo?.payment?.amountOfRemainingInstallments &&
-                  `Prestações pagas ${studentInfo.payment.amountOfInstallmentsPaid} de ${studentInfo.payment.amountOfInstallments} a pagamento: ${studentInfo.payment.amountOfRemainingInstallments}`
-                }
-              </p>
-
-              {
-                studentInfo?.payment.method === 'INSTALLMENTS' && studentInfo?.payment?.amountOfInstallments !== studentInfo?.payment?.amountOfInstallmentsPaid ?
-                <p className="font-regular text-sm">
-                  Dirige-te à escola para proceder o pagamento das prestações restantes.
-                </p> : studentInfo?.payment?.amountOfInstallments === studentInfo?.payment?.amountOfInstallmentsPaid && <p className="font-regular text-sm mb-5">Pagamento de {studentInfo?.payment.total} realizado com sucesso</p>
-              }
-            </>
           )}
         </div>
       </div>
