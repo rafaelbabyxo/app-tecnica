@@ -18,7 +18,11 @@ export class UploadController {
     FileInterceptor('file', {
       storage: diskStorage({
         destination: (req, file, callback) => {
-          const uploadPath = '/app/uploads/calendars'
+          // Usar volume do Railway em produção, pasta local em desenvolvimento
+          const uploadPath = process.env.NODE_ENV === 'production' 
+            ? '/app/uploads/calendars' 
+            : './uploads/calendars'
+          
           if (!existsSync(uploadPath)) {
             mkdirSync(uploadPath, { recursive: true })
           }

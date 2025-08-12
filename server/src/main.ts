@@ -8,8 +8,12 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
   app.useGlobalPipes(new ValidationPipe())
 
-  // Servir arquivos estáticos da pasta uploads (volume persistente)
-  app.useStaticAssets('/app/uploads', {
+  // Servir arquivos estáticos da pasta uploads (volume persistente em produção)
+  const uploadsPath = process.env.NODE_ENV === 'production' 
+    ? '/app/uploads' 
+    : './uploads'
+  
+  app.useStaticAssets(uploadsPath, {
     prefix: '/uploads/',
   })
 
