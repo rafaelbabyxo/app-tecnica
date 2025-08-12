@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core'
 import { ValidationPipe } from '@nestjs/common'
 import { NestExpressApplication } from '@nestjs/platform-express'
-import { join } from 'path'
 
 import { AppModule } from './app.module'
 
@@ -9,8 +8,8 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
   app.useGlobalPipes(new ValidationPipe())
 
-  // Servir arquivos estáticos da pasta uploads
-  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+  // Servir arquivos estáticos da pasta uploads (volume persistente)
+  app.useStaticAssets('/app/uploads', {
     prefix: '/uploads/',
   })
 

@@ -9,6 +9,7 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
 import { extname } from 'path'
 import { v4 as uuid } from 'uuid'
+import { mkdirSync, existsSync } from 'fs'
 
 @Controller('upload')
 export class UploadController {
@@ -16,7 +17,13 @@ export class UploadController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './uploads/calendars',
+        destination: (req, file, callback) => {
+          const uploadPath = '/app/uploads/calendars'
+          if (!existsSync(uploadPath)) {
+            mkdirSync(uploadPath, { recursive: true })
+          }
+          callback(null, uploadPath)
+        },
         filename: (req, file, callback) => {
           const fileExtName = extname(file.originalname)
           const fileName = `${uuid()}${fileExtName}`
