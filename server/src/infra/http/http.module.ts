@@ -17,6 +17,7 @@ import { ClassController } from './controllers/class.controller'
 import { ScheduledClassController } from './controllers/scheduled-class.controller'
 import { UserController } from './controllers/user.controller'
 import { UploadController } from './controllers/upload.controller'
+import { HealthController } from './controllers/health.controller'
 
 // INFORMATION
 import { CreateInformation } from '../../application/use-cases/information/create-information'
@@ -123,6 +124,7 @@ import { CreateToken } from 'src/helpers/create-token'
 @Module({
   imports: [DatabaseModule, EmailModule, PushNotificationModule],
   controllers: [
+    HealthController,
     InformationController,
     StudentController,
     CalendarController,
