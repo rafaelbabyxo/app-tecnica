@@ -6,6 +6,7 @@ import { EmailModule } from 'src/mail/email.module'
 import { PushNotificationModule } from 'src/push-notification/push-notification.module'
 
 // CONTROLLERS
+import { HealthController } from './controllers/health.controller'
 import { InformationController } from './controllers/information.controller'
 import { StudentController } from './controllers/student.controller'
 import { CalendarController } from './controllers/calendar.controller'
@@ -17,7 +18,6 @@ import { ClassController } from './controllers/class.controller'
 import { ScheduledClassController } from './controllers/scheduled-class.controller'
 import { UserController } from './controllers/user.controller'
 import { UploadController } from './controllers/upload.controller'
-import { HealthController } from './controllers/health.controller'
 
 // INFORMATION
 import { CreateInformation } from '../../application/use-cases/information/create-information'
