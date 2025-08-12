@@ -69,14 +69,14 @@ export async function createCodeCalendar(data: FormData) {
     return { message: 'Success!' }
   } catch (error) {
     console.error('Erro na criação do calendário:', error)
-    
+
     if (error instanceof AxiosError) {
       console.error('Detalhes do erro axios:', {
         status: error.response?.status,
         data: error.response?.data,
         message: error.message,
       })
-      
+
       if (error.response?.data?.message) {
         if (
           error.response?.data.message[0] === errorMessages.schoolIdMustBeUUID

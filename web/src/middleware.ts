@@ -4,7 +4,7 @@ export function middleware(request: NextRequest) {
   // Apenas em desenvolvimento
   if (process.env.NODE_ENV === 'development') {
     const userCookie = request.cookies.get('user')
-    
+
     // Se não há cookie de usuário, criar um mock
     if (!userCookie && request.nextUrl.pathname.startsWith('/panel')) {
       const mockUser = {
@@ -15,7 +15,7 @@ export function middleware(request: NextRequest) {
         schoolId: 'dev-school-id',
         createdAt: new Date().toISOString(),
       }
-      
+
       const response = NextResponse.next()
       response.cookies.set('user', JSON.stringify(mockUser), {
         httpOnly: false,
@@ -23,11 +23,11 @@ export function middleware(request: NextRequest) {
         sameSite: 'lax',
         maxAge: 60 * 60 * 24, // 24 horas
       })
-      
+
       return response
     }
   }
-  
+
   return NextResponse.next()
 }
 
