@@ -476,20 +476,31 @@ export default function PracticalClasses({ student }: PracticalClassesProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
-  const { '@studentsPlatform:student': student } = parseCookies({ req: ctx.req })
+  try {
+    const cookies = parseCookies({ req: ctx.req })
+    const student = cookies['@studentsPlatform:student']
 
-  if (!student) {
+    if (!student) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      }
+    }
+
+    return {
+      props: {
+        student: JSON.parse(student)
+      },
+    }
+  } catch (error) {
+    console.error('SSR Error:', error)
     return {
       redirect: {
         destination: '/',
         permanent: false,
       },
     }
-  }
-
-  return {
-    props: {
-      student: JSON.parse(student)
-    },
   }
 }

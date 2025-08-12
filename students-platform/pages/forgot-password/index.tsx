@@ -93,18 +93,26 @@ export default function ForgotPassword() {
 }
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
-  const { '@studentsPlatform:student': student } = parseCookies({ req: ctx.req })
+  try {
+    const cookies = parseCookies({ req: ctx.req })
+    const student = cookies['@studentsPlatform:student']
 
-  if (student) {
-    return {
-      redirect: {
-        destination: '/menu',
-        permanent: false,
-      },
+    if (student) {
+      return {
+        redirect: {
+          destination: '/menu',
+          permanent: false,
+        },
+      }
     }
-  }
 
-  return {
-    props: {},
+    return {
+      props: {},
+    }
+  } catch (error) {
+    console.error('SSR Error:', error)
+    return {
+      props: {},
+    }
   }
 }
