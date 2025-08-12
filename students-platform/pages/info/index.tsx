@@ -71,22 +71,6 @@ export default function Info() {
   const { student } = useAuth()
   const { toast } = useToast()
 
-  // Client-side authentication check
-  useEffect(() => {
-    if (!student) {
-      router.push('/')
-    }
-  }, [student, router])
-
-  // Show loading while checking authentication
-  if (!student) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div>Carregando...</div>
-      </div>
-    )
-  }
-
   const { data: studentInfo, isLoading } = useQuery<StudentInfo>(['information'], async () => {
     try {
       const [
@@ -140,7 +124,26 @@ export default function Info() {
         }
       }
     }
+  }, {
+    enabled: !!student
   })
+
+  // Client-side authentication check
+  useEffect(() => {
+    if (!student) {
+      router.push('/')
+    }
+  }, [student, router])
+
+  // Show loading while checking authentication
+  if (!student) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div>Carregando...</div>
+      </div>
+    )
+  }
+
   const codeTests = studentInfo?.test?.filter(test => test.category === 'THEORETICAL')
   const drivingTests = studentInfo?.test?.filter(test => test.category === 'PRACTICAL')
 

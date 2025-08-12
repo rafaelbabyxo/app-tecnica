@@ -44,22 +44,6 @@ export default function PracticalClasses() {
   const router = useRouter()
   const { student } = useAuth()
   const queryClient = useQueryClient()
-
-  // Client-side authentication check
-  useEffect(() => {
-    if (!student) {
-      router.push('/')
-    }
-  }, [student, router])
-
-  // Show loading while checking authentication
-  if (!student) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div>Carregando...</div>
-      </div>
-    )
-  }
   
   // Estados para o calendário interativo
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
@@ -83,7 +67,59 @@ export default function PracticalClasses() {
         window.alert(error.response?.data.message[0])
       }
     }
+  }, {
+    enabled: !!student
   })
+
+  // Mutation para agendar aula
+  const { mutateAsync: scheduleClass, isLoading: isScheduling } = useMutation(
+    async ({ date, time }: { date: Date, time: string }) => {
+      const className = `Aula Prática - ${format(date, 'dd/MM/yyyy')}`
+      
+      try {
+        await server.post('/scheduled-class/practical-class', {
+          schedulingDate: format(date, 'yyyy-MM-dd'),
+          schedulingHour: time,
+          className,
+          classDescription: 'Aula prática de condução agendada pelo aluno',
+          status: 'CONFIRMED',
+          studentId: student?.id,
+        })
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          throw new Error(error.response?.data?.message || 'Erro ao agendar aula')
+        }
+        throw error
+      }
+    },
+    {
+      onSuccess() {
+        window.alert(`Aula confirmada para ${format(selectedDate!, 'dd/MM/yyyy')} às ${selectedTime}`)
+        queryClient.invalidateQueries({ queryKey: ['practical-classes'] })
+        setSelectedDate(null)
+        setSelectedTime('')
+      },
+      onError(error: Error) {
+        window.alert(`Erro ao agendar: ${error.message}`)
+      },
+    },
+  )
+
+  // Client-side authentication check
+  useEffect(() => {
+    if (!student) {
+      router.push('/')
+    }
+  }, [student, router])
+
+  // Show loading while checking authentication
+  if (!student) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div>Carregando...</div>
+      </div>
+    )
+  }
 
   // Função para gerar horários disponíveis
   const generateTimeSlots = (date: Date): TimeSlot[] => {
@@ -113,40 +149,6 @@ export default function PracticalClasses() {
     
     return slots
   }
-
-  // Mutation para agendar aula
-  const { mutateAsync: scheduleClass, isLoading: isScheduling } = useMutation(
-    async ({ date, time }: { date: Date, time: string }) => {
-      const className = `Aula Prática - ${format(date, 'dd/MM/yyyy')}`
-      
-      try {
-        await server.post('/scheduled-class/practical-class', {
-          schedulingDate: format(date, 'yyyy-MM-dd'),
-          schedulingHour: time,
-          className,
-          classDescription: 'Aula prática de condução agendada pelo aluno',
-          status: 'CONFIRMED',
-          studentId: student.id,
-        })
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          throw new Error(error.response?.data?.message || 'Erro ao agendar aula')
-        }
-        throw error
-      }
-    },
-    {
-      onSuccess() {
-        window.alert(`Aula confirmada para ${format(selectedDate!, 'dd/MM/yyyy')} às ${selectedTime}`)
-        queryClient.invalidateQueries({ queryKey: ['practical-classes'] })
-        setSelectedDate(null)
-        setSelectedTime('')
-      },
-      onError(error: Error) {
-        window.alert(`Erro ao agendar: ${error.message}`)
-      },
-    },
-  )
 
   // Navegação do calendário
   const monthStart = startOfMonth(currentMonth)

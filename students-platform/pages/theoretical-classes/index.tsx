@@ -60,22 +60,6 @@ export default function TheoreticalClasses() {
   const queryClient = useQueryClient()
   const { toast } = useToast()
 
-  // Client-side authentication check
-  useEffect(() => {
-    if (!student) {
-      router.push('/')
-    }
-  }, [student, router])
-
-  // Show loading while checking authentication
-  if (!student) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div>Carregando...</div>
-      </div>
-    )
-  }
-
   const { data: theoreticalClassesData, isLoading } = useQuery<
     TheoreticalClassesData[]
   >(['theoretical-classes'], async () => {
@@ -94,6 +78,8 @@ export default function TheoreticalClasses() {
         window.alert(`Eita ${error.response?.data.message[0]}`)
       }
     }
+  }, {
+    enabled: !!student
   })
 
   const { mutateAsync: markClassAsCompleted, isLoading: isMarcClassAsCompletedLoading } = useMutation(
@@ -116,6 +102,22 @@ export default function TheoreticalClasses() {
       },
     },
   )
+
+  // Client-side authentication check
+  useEffect(() => {
+    if (!student) {
+      router.push('/')
+    }
+  }, [student, router])
+
+  // Show loading while checking authentication
+  if (!student) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div>Carregando...</div>
+      </div>
+    )
+  }
 
   async function handleMarkLessonAsCompleted(lesson: TheoreticalClassesData) {
     if (lesson.scheduledClass?.status === 'COMPLETED') {
