@@ -1,12 +1,12 @@
-import { GetServerSideProps } from 'next'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { parseCookies } from 'nookies'
 import { useQuery } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 
 import { server } from '@/lib/server'
 import { errorMessages } from '@/utils/errors/errorMessages'
-import type { Student } from '@/contexts/AuthContext'
+import { useAuth } from '@/hooks/useAuth'
 
 import { useToast } from "@/components/ui/use-toast"
 
@@ -20,16 +20,25 @@ type AxiosData = {
   calendar: Calendar
 }
 
-interface CalendarProps {
-  student: Student
-}
+interface CalendarProps {}
 
-export default function Calendar({ student }: CalendarProps) {
+export default function Calendar() {
+  const router = useRouter()
+  const { student } = useAuth()
   const { toast } = useToast()
+
+  // Client-side authentication check
+  useEffect(() => {
+    if (!student) {
+      router.push('/')
+    }
+  }, [student, router])
 
   const { data } = useQuery<any>(['calendar'], async () => {
     try {
-      const { data } = await server.get<AxiosData>(`/calendar/school/${student?.schoolId}`)
+      if (!student?.schoolId) return {}
+      
+      const { data } = await server.get<AxiosData>(`/calendar/school/${student.schoolId}`)
 
       return data?.calendar ? data.calendar : {}
     } catch (error) {
@@ -42,7 +51,11 @@ export default function Calendar({ student }: CalendarProps) {
         })
       }
     }
-  })
+  }, { enabled: !!student?.schoolId })
+
+  if (!student) {
+    return <div>Carregando...</div>
+  }
 
   return (
     <div className="flex flex-col gap-4 items-start mt-6">
@@ -74,23 +87,4 @@ export default function Calendar({ student }: CalendarProps) {
       </div>
     </div>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  const { '@studentsPlatform:student': student } = parseCookies({ req: ctx.req })
-
-  if (!student) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
-  }
-
-  return {
-    props: {
-      student: JSON.parse(student)
-    },
-  }
 }
