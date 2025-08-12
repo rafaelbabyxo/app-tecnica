@@ -1,4 +1,5 @@
 {
+  "buildCommand": "npm run build",
   "env": {
     "NEXT_PUBLIC_SERVER_URL": "https://app-tecnica-production.up.railway.app/"
   }
