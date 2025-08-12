@@ -9,11 +9,9 @@ import { AxiosError } from "axios";
 import { SubmitButton } from "@/components/buttons/SubmitButton";
 import { Input } from "@/components/Input";
 import { useToast } from "@/components/ui/use-toast";
-
 import { server } from "@/lib/server";
 import { errorMessages } from "@/utils/errors/errorMessages";
-
-import logo from '../../assets/tecnica_LOGO.jpg'
+import logo from '@/assets/tecnica_LOGO.jpg'
 
 interface ForgotFormData {
   email: string

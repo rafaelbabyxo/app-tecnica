@@ -14,7 +14,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { server } from "@/lib/server";
 import { errorMessages } from "@/utils/errors/errorMessages";
 
-import logo from '../../assets/tecnica_LOGO.jpg'
+import logo from '@/assets/tecnica_LOGO.jpg'
 
 interface ResetFormData {
   password: string
