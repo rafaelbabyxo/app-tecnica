@@ -1,4 +1,4 @@
-import { GetServerSideProps } from 'next'
+import { useEffect } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
@@ -27,6 +27,16 @@ export default function Home() {
 
   const router = useRouter()
   const { login } = useAuth()
+
+  // Client-side redirect check
+  useEffect(() => {
+    const cookies = parseCookies()
+    const student = cookies['@studentsPlatform:student']
+    
+    if (student) {
+      router.push('/menu')
+    }
+  }, [router])
 
   async function handleLogin(data: LoginFormData) {
     await login({ number: Number(data.number), password: data.password })
@@ -69,21 +79,4 @@ export default function Home() {
       </form>
     </section>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  const { '@studentsPlatform:student': student } = parseCookies({ req: ctx.req })
-
-  if (student) {
-    return {
-      redirect: {
-        destination: '/menu',
-        permanent: false,
-      },
-    }
-  }
-
-  return {
-    props: {},
-  }
 }
