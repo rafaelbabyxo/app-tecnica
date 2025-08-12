@@ -1,15 +1,26 @@
 import * as path from 'node:path'
+import * as fs from 'node:fs'
 import { Injectable } from '@nestjs/common'
 import * as firebase from 'firebase-admin'
 
 import { PrismaService } from 'src/infra/database/prisma/prisma.service'
 
-firebase.initializeApp({
-  credential: firebase.credential.cert(
-    path.join(__dirname, '..', '..', 'firebase-adminsdk.json'),
-  ),
-  projectId: process.env.FIREBASE_PROJECT_ID,
-})
+// Initialize Firebase with error handling
+try {
+  const serviceAccountPath = path.join(__dirname, '..', '..', 'firebase-adminsdk.json')
+  
+  if (fs.existsSync(serviceAccountPath)) {
+    firebase.initializeApp({
+      credential: firebase.credential.cert(serviceAccountPath),
+      projectId: process.env.FIREBASE_PROJECT_ID,
+    })
+    console.log('Firebase initialized successfully')
+  } else {
+    console.warn('Firebase service account file not found. Push notifications will be disabled.')
+  }
+} catch (error) {
+  console.error('Failed to initialize Firebase:', error.message)
+}
 
 interface SendNotificationToSchoolData {
   schoolId: string
