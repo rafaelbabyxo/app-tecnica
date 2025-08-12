@@ -1,0 +1,216 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Information {
+  id          String   @id
+  name        String
+  description String
+  date        String
+  schoolId    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  school      School   @relation(fields: [schoolId], references: [id])
+
+  @@map("information")
+}
+
+model Class {
+  id             String           @id
+  name           String
+  description    String?
+  code           Int              @unique
+  category       ClassCategory    @default(THEORETICAL)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  scheduledClass ScheduledClass[]
+
+  @@map("classes")
+}
+
+model Calendar {
+  id        String   @id
+  fileUrl   String
+  schoolId  String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  school    School   @relation(fields: [schoolId], references: [id])
+
+  @@map("calendars")
+}
+
+model Group {
+  id        String   @id
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  schools   School[]
+
+  @@map("groups")
+}
+
+model School {
+  id                      String                  @id
+  name                    String
+  groupId                 String?
+  createdAt               DateTime                @default(now())
+  updatedAt               DateTime                @updatedAt
+  group                   Group?                  @relation(fields: [groupId], references: [id])
+  students                Student[]
+  users                   User[]
+  driverLicenseCategories DriverLicenseCategory[]
+  informations            Information[]
+  calendar                Calendar?
+
+  @@map("schools")
+}
+
+model DriverLicenseCategory {
+  id           String    @id
+  name         String
+  price        Float
+  installments Json
+  schoolId     String
+  vehicles     String[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  school       School    @relation(fields: [schoolId], references: [id])
+  students     Student[]
+
+  @@map("driver_license_categories")
+}
+
+model User {
+  id               String           @id
+  name             String
+  email            String           @unique
+  password         String
+  schoolId         String
+  function         UserFunction     @default(ADMIN)
+  token            String?
+  imtId            String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  school           School           @relation(fields: [schoolId], references: [id])
+  scheduledClasses ScheduledClass[]
+  tests            Test[]
+
+  @@map("users")
+}
+
+model Student {
+  id                      String                @id
+  name                    String
+  email                   String                @unique
+  password                String?
+  number                  Int                   @unique
+  phone                   String?
+  birthDate               String?
+  imtId                   String?
+  enrolledAt              String?
+  driverLicenseCategoryId String
+  schoolId                String
+  paymentId               String?               @unique
+  token                   String?
+  firebaseTokens          String[]
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
+  scheduledClass          ScheduledClass[]
+  payment                 Payment?              @relation(fields: [paymentId], references: [id])
+  school                  School                @relation(fields: [schoolId], references: [id])
+  driverLicenseCategory   DriverLicenseCategory @relation(fields: [driverLicenseCategoryId], references: [id])
+  tests                   Test[]
+
+  @@map("students")
+}
+
+model ScheduledClass {
+  id             String               @id
+  schedulingDate String?
+  schedulingHour String?
+  justification  String?
+  status         ScheduledClassStatus @default(PENDING)
+  studentId      String
+  classId        String
+  vehicle        String?
+  instructorId   String?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  class          Class                @relation(fields: [classId], references: [id])
+  student        Student              @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  instructor     User?                @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+
+  @@map("scheduled_classes")
+}
+
+model Test {
+  id           String       @id
+  testDate     String
+  testHour     String
+  place        String?
+  status       TestStatus   @default(MARKED)
+  studentId    String
+  instructorId String?
+  category     TestCategory @default(THEORETICAL)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  student      Student      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  instructor   User?        @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+
+  @@map("tests")
+}
+
+model Payment {
+  id                            String        @id
+  method                        PaymentMethod @default(INCASH)
+  total                         Float
+  amountOfInstallments          Int?
+  amountOfInstallmentsPaid      Int?
+  amountOfRemainingInstallments Int?
+  createdAt                     DateTime      @default(now())
+  updatedAt                     DateTime      @updatedAt
+  student                       Student?
+
+  @@map("payments")
+}
+
+enum ClassCategory {
+  THEORETICAL
+  PRACTICAL
+}
+
+enum UserFunction {
+  ADMIN
+  DIRECTOR
+  INSTRUCTOR
+}
+
+enum ScheduledClassStatus {
+  UNCHECKED
+  PENDING
+  CONFIRMED
+  CANCELED
+  MISSED
+  COMPLETED
+}
+
+enum TestStatus {
+  APPROVED
+  DISAPPROVED
+  MARKED
+}
+
+enum TestCategory {
+  THEORETICAL
+  PRACTICAL
+}
+
+enum PaymentMethod {
+  INSTALLMENTS
+  INCASH
+}

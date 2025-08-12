@@ -1,0 +1,2 @@
+# Railway Deploy Configuration
+web: npm run deploy
