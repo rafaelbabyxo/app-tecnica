@@ -1,19 +1,35 @@
-import { GetServerSideProps } from 'next'
-import { parseCookies } from 'nookies'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 
-import { server } from '@/lib/server'
-
+import { useAuth } from '@/hooks/useAuth'
 import type { Student } from '@/contexts/AuthContext'
 import { NavigationButton } from '@/components/buttons/NavigationButton'
 
 interface MenuProps {
-  student: Student
+  student?: Student
 }
 
-export default function Menu({ student }: MenuProps) {
-  // Firebase messaging completely removed
-  
+export default function Menu() {
+  const router = useRouter()
+  const { student } = useAuth()
+
+  // Client-side authentication check
+  useEffect(() => {
+    if (!student) {
+      router.push('/')
+    }
+  }, [student, router])
+
+  // Show loading while checking authentication
+  if (!student) {
+    return (
+      <main className="flex flex-col gap-4 items-center mt-6">
+        <div>Carregando...</div>
+      </main>
+    )
+  }
+
   return (
     <main className="flex flex-col gap-4 items-center mt-6">
       <Head>
@@ -34,23 +50,4 @@ export default function Menu({ student }: MenuProps) {
       </div>
     </main>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  const { '@studentsPlatform:student': student } = parseCookies({ req: ctx.req })
-
-  if (!student) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
-  }
-
-  return {
-    props: {
-      student: JSON.parse(student)
-    },
-  }
 }
