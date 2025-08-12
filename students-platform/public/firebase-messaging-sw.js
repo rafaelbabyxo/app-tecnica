@@ -7,7 +7,7 @@ const firebaseConfig = {
   apiKey: 'AIzaSyBeufQr5SGUgOgSid47193avBiDqqiko7E',
   authDomain: 'app-tecnica-f3803.firebaseapp.com',
   projectId: 'app-tecnica-f3803',
-  storageBucket: 'app-tecnica-f3803.appspot.com',
+  storageBucket: 'app-tecnica-f3803.firebasestorage.app',
   messagingSenderId: '692604416537',
   appId: '1:692604416537:web:b69e728405d613e8b07088',
   measurementId: 'G-GRH6K1P9HR',

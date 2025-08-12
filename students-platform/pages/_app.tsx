@@ -23,18 +23,22 @@ export default function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-      const messaging = getMessaging(firebaseApp);
-      const unsubscribe = onMessage(messaging, (payload) => {
-        toast({
-          title: payload.notification?.title,
-          description: payload.notification?.body
-        })
-      });
-      return () => {
-        unsubscribe();
-      };
+      try {
+        const messaging = getMessaging(firebaseApp);
+        const unsubscribe = onMessage(messaging, (payload) => {
+          toast({
+            title: payload.notification?.title,
+            description: payload.notification?.body
+          })
+        });
+        return () => {
+          unsubscribe();
+        };
+      } catch (error) {
+        console.error('Firebase messaging error:', error);
+      }
     }
-  }, []);
+  }, [toast]);
 
   return (
     <AppProvider>

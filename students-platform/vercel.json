@@ -1,12 +1,4 @@
 {
-  "name": "students-platform",
-  "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
   "env": {
     "NEXT_PUBLIC_SERVER_URL": "https://app-tecnica-production.up.railway.app/",
     "NEXT_PUBLIC_FIREBASE_API_KEY": "AIzaSyBeufQr5SGUgOgSid47193avBiDqqiko7E",
