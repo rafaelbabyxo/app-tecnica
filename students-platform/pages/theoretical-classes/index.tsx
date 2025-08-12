@@ -1,7 +1,6 @@
-import { Dispatch, SetStateAction, useState } from 'react'
-import { GetServerSideProps } from 'next'
+import { Dispatch, SetStateAction, useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { parseCookies } from 'nookies'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { Barcode, Check } from '@phosphor-icons/react'
@@ -9,10 +8,9 @@ import { Barcode, Check } from '@phosphor-icons/react'
 import { Input } from '@/components/Input'
 import { DefaultButton } from '@/components/buttons/DefaultButton'
 import { useToast } from '@/components/ui/use-toast'
+import { useAuth } from '@/hooks/useAuth'
 
 import { server } from '@/lib/server'
-
-import type { Student } from '@/contexts/AuthContext'
 
 interface sectionAccordionProps {
   id: string
@@ -52,14 +50,31 @@ interface MarkClassAsCompleted {
 }
 
 interface TheoreticalClassesProps {
-  student: Student
 }
 
-export default function TheoreticalClasses({ student }: TheoreticalClassesProps) {
+export default function TheoreticalClasses() {
   const [classCode, setClassCode] = useState('')
+  const router = useRouter()
+  const { student } = useAuth()
 
   const queryClient = useQueryClient()
   const { toast } = useToast()
+
+  // Client-side authentication check
+  useEffect(() => {
+    if (!student) {
+      router.push('/')
+    }
+  }, [student, router])
+
+  // Show loading while checking authentication
+  if (!student) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div>Carregando...</div>
+      </div>
+    )
+  }
 
   const { data: theoreticalClassesData, isLoading } = useQuery<
     TheoreticalClassesData[]
@@ -199,34 +214,4 @@ export default function TheoreticalClasses({ student }: TheoreticalClassesProps)
       ))}
     </div>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  try {
-    const cookies = parseCookies({ req: ctx.req })
-    const student = cookies['@studentsPlatform:student']
-
-    if (!student) {
-      return {
-        redirect: {
-          destination: '/',
-          permanent: false,
-        },
-      }
-    }
-
-    return {
-      props: {
-        student: JSON.parse(student)
-      },
-    }
-  } catch (error) {
-    console.error('SSR Error:', error)
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
-  }
 }

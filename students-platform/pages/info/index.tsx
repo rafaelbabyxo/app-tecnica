@@ -1,5 +1,5 @@
-import { GetServerSideProps } from 'next'
-import { parseCookies } from 'nookies'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { useQuery } from '@tanstack/react-query'
 import { CheckCircle, Spinner, WarningCircle, XCircle } from '@phosphor-icons/react'
@@ -9,7 +9,7 @@ import { pt } from 'date-fns/locale'
 
 import { server } from '@/lib/server'
 import { errorMessages } from '@/utils/errors/errorMessages'
-import type { Student } from '@/contexts/AuthContext'
+import { useAuth } from '@/hooks/useAuth'
 
 import { useToast } from "@/components/ui/use-toast"
 
@@ -64,11 +64,28 @@ interface StudentInfo {
 }
 
 interface InfoProps {
-  student: Student
 }
 
-export default function Info({ student }: InfoProps) {
+export default function Info() {
+  const router = useRouter()
+  const { student } = useAuth()
   const { toast } = useToast()
+
+  // Client-side authentication check
+  useEffect(() => {
+    if (!student) {
+      router.push('/')
+    }
+  }, [student, router])
+
+  // Show loading while checking authentication
+  if (!student) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div>Carregando...</div>
+      </div>
+    )
+  }
 
   const { data: studentInfo, isLoading } = useQuery<StudentInfo>(['information'], async () => {
     try {
@@ -283,34 +300,4 @@ export default function Info({ student }: InfoProps) {
       </div>
     </div>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  try {
-    const cookies = parseCookies({ req: ctx.req })
-    const student = cookies['@studentsPlatform:student']
-
-    if (!student) {
-      return {
-        redirect: {
-          destination: '/',
-          permanent: false,
-        },
-      }
-    }
-
-    return {
-      props: {
-        student: JSON.parse(student)
-      },
-    }
-  } catch (error) {
-    console.error('SSR Error:', error)
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
-  }
 }

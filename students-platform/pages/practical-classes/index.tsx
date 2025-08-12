@@ -1,15 +1,15 @@
-import { GetServerSideProps } from 'next';
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { parseCookies } from 'nookies';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from "axios";
 import { useState } from 'react'
 import { format, isSameDay, isBefore, isWeekend, startOfMonth, endOfMonth, eachDayOfInterval, getDay, addDays, startOfWeek, endOfWeek, startOfDay, isSameMonth } from 'date-fns'
 
 import { PracticalClassesList } from "@/components/PracticalClassesList";
+import { useAuth } from '@/hooks/useAuth'
 
 import { server } from '@/lib/server'
-import type { Student } from '@/contexts/AuthContext';
 
 export interface ScheduledClass {
   id: string
@@ -38,11 +38,28 @@ interface TimeSlot {
 }
 
 interface PracticalClassesProps {
-  student: Student
 }
 
-export default function PracticalClasses({ student }: PracticalClassesProps) {
+export default function PracticalClasses() {
+  const router = useRouter()
+  const { student } = useAuth()
   const queryClient = useQueryClient()
+
+  // Client-side authentication check
+  useEffect(() => {
+    if (!student) {
+      router.push('/')
+    }
+  }, [student, router])
+
+  // Show loading while checking authentication
+  if (!student) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div>Carregando...</div>
+      </div>
+    )
+  }
   
   // Estados para o calendário interativo
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
@@ -473,34 +490,4 @@ export default function PracticalClasses({ student }: PracticalClassesProps) {
       </div>
     </div>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  try {
-    const cookies = parseCookies({ req: ctx.req })
-    const student = cookies['@studentsPlatform:student']
-
-    if (!student) {
-      return {
-        redirect: {
-          destination: '/',
-          permanent: false,
-        },
-      }
-    }
-
-    return {
-      props: {
-        student: JSON.parse(student)
-      },
-    }
-  } catch (error) {
-    console.error('SSR Error:', error)
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
-  }
 }

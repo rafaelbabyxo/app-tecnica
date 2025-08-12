@@ -1,19 +1,36 @@
-import { GetServerSideProps } from 'next';
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { parseCookies } from 'nookies';
 import { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 
 import { server } from '@/lib/server'
-import type { Student } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth'
 
 interface TestNotificationsProps {
-  student: Student
 }
 
-export default function TestNotifications({ student }: TestNotificationsProps) {
+export default function TestNotifications() {
   const [title, setTitle] = useState('Teste de Notificação')
   const [message, setMessage] = useState('Esta é uma notificação de teste!')
+  const router = useRouter()
+  const { student } = useAuth()
+
+  // Client-side authentication check
+  useEffect(() => {
+    if (!student) {
+      router.push('/')
+    }
+  }, [student, router])
+
+  // Show loading while checking authentication
+  if (!student) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div>Carregando...</div>
+      </div>
+    )
+  }
 
   // Mutation para enviar notificação para o estudante
   const { mutateAsync: sendNotification, isLoading } = useMutation(
@@ -187,34 +204,4 @@ export default function TestNotifications({ student }: TestNotificationsProps) {
       </div>
     </div>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  try {
-    const cookies = parseCookies({ req: ctx.req })
-    const student = cookies['@studentsPlatform:student']
-
-    if (!student) {
-      return {
-        redirect: {
-          destination: '/',
-          permanent: false,
-        },
-      }
-    }
-
-    return {
-      props: {
-        student: JSON.parse(student)
-      },
-    }
-  } catch (error) {
-    console.error('SSR Error:', error)
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
-  }
 }
