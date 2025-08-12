@@ -2,10 +2,8 @@ import { useEffect } from 'react';
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
 import Head from 'next/head'
-import { getMessaging, getToken } from "firebase/messaging";
 
 import { server } from '@/lib/server'
-import { firebaseApp } from '@/lib/firebase';
 
 import type { Student } from '@/contexts/AuthContext'
 import { NavigationButton } from '@/components/buttons/NavigationButton'
@@ -15,6 +13,8 @@ interface MenuProps {
 }
 
 export default function Menu({ student }: MenuProps) {
+  // Firebase messaging temporarily disabled
+  /*
   useEffect(() => {
     const messaging = getMessaging(firebaseApp);
 
@@ -64,6 +64,7 @@ export default function Menu({ student }: MenuProps) {
 
     requestNotificationPermission();
   }, [student?.id]);
+  */
   
   return (
     <main className="flex flex-col gap-4 items-center mt-6">

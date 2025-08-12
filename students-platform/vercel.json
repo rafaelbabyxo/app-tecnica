@@ -1,12 +1,5 @@
 {
   "env": {
-    "NEXT_PUBLIC_SERVER_URL": "https://app-tecnica-production.up.railway.app/",
-    "NEXT_PUBLIC_FIREBASE_API_KEY": "AIzaSyBeufQr5SGUgOgSid47193avBiDqqiko7E",
-    "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN": "app-tecnica-f3803.firebaseapp.com",
-    "NEXT_PUBLIC_FIREBASE_PROJECT_ID": "app-tecnica-f3803",
-    "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET": "app-tecnica-f3803.firebasestorage.app",
-    "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID": "692604416537",
-    "NEXT_PUBLIC_FIREBASE_APP_ID": "1:692604416537:web:b69e728405d613e8b07088",
-    "NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID": "G-GRH6K1P9HR"
+    "NEXT_PUBLIC_SERVER_URL": "https://app-tecnica-production.up.railway.app/"
   }
 }
