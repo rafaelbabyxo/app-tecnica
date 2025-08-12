@@ -1,11 +1,9 @@
 {
-  "name": "app-tecnica-monorepo",
-  "version": "1.0.0", 
-  "description": "Monorepo for app tecnica",
+  "name": "app-tecnica-root",
+  "version": "1.0.0",
   "scripts": {
-    "build": "./build.sh",
-    "start": "cd server && npm run start:prod",
-    "dev": "cd server && npm run start:dev"
+    "build": "echo 'Build handled by Railway'",
+    "start": "echo 'Start handled by Railway'"
   },
   "engines": {
     "node": "18.17.1"

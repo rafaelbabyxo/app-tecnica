@@ -1,0 +1,19 @@
+{
+  "name": "app-tecnica-server",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "scripts": {
+    "build": "cd server && npm ci && npx prisma generate && npx prisma migrate deploy && npm run build",
+    "start": "cd server && npm run start:prod",
+    "start:prod": "cd server && npm run start:prod"
+  },
+  "engines": {
+    "node": "18.17.1"
+  },
+  "dependencies": {
+    "@nestjs/common": "^9.0.0",
+    "@nestjs/core": "^9.0.0"
+  }
+}
