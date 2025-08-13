@@ -30,8 +30,8 @@ export function DeleteCodeLesson({ lesson, trigger }: DeleteCodeLessonProps) {
 
     if (message === 'Success!') {
       toast({
-        title: 'Aula de código deletada!',
-        description: 'A aula de código foi deletada com sucesso!',
+        title: 'Aula de código apagada!',
+        description: 'A aula de código foi apagada com sucesso!',
       })
     } else {
       toast({

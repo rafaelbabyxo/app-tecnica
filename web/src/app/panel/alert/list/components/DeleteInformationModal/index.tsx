@@ -32,8 +32,8 @@ export function DeleteInformationModal({
 
     if (message === 'Success!') {
       toast({
-        title: 'Informação deletada!',
-        description: 'Informação deletada com sucesso!',
+        title: 'Informação apagada!',
+        description: 'Informação apagada com sucesso!',
       })
     } else {
       toast({

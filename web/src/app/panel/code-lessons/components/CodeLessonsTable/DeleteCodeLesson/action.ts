@@ -17,7 +17,7 @@ export async function deleteCodeLesson(lessonId: string) {
       if (error.response?.data?.message) {
         if (error.response?.data.message === errorMessages.classNotFound) {
           return {
-            message: 'Parece que essa aula de código já foi deletada!',
+            message: 'Parece que essa aula de código já foi apagada!',
           }
         }
       } else {

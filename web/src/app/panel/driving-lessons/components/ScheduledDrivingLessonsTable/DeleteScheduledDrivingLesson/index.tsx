@@ -32,8 +32,8 @@ export function DeleteScheduledDrivingLesson({
 
     if (message === 'Success!') {
       toast({
-        title: 'Marcação da aula de condução deletada!',
-        description: 'A marcação da aula de condução foi deletada com sucesso!',
+        title: 'Marcação da aula de condução apagada!',
+        description: 'A marcação da aula de condução foi apagada com sucesso!',
       })
 
       location.reload()

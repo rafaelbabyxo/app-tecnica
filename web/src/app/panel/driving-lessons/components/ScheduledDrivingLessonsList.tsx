@@ -44,7 +44,7 @@ export function ScheduledDrivingLessonsList({
   const itemsPerPage = 10
 
   const urlDirector = new URL(
-    `${process.env.API_URL}/scheduled-class/classes/category`,
+    `${process.env.API_URL}/scheduled-class/category/${schoolId}`,
   )
   urlDirector.searchParams.append('category', 'PRACTICAL')
   urlDirector.searchParams.append('page', (currentPage + 1).toString())

@@ -42,7 +42,7 @@ export async function editScheduledDrivingLesson({
           error.response?.data.message === errorMessages.scheduledClassNotFound
         ) {
           return {
-            message: 'Parece que essa marcação já foi deletada!',
+            message: 'Parece que essa marcação já foi apagada!',
           }
         }
       } else {
