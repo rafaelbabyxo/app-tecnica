@@ -11,11 +11,11 @@ import { GetStudentByNumber } from './get-student-by-number'
 
 interface CreateStudentRequest {
   name: string
-  email: string
+  email?: string
   schoolId: string
   driverLicenseCategoryId: string
   number: number
-  phone: string
+  phone?: string
   birthDate?: string
   imtId?: string
   enrolledAt?: string
