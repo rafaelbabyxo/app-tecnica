@@ -120,14 +120,6 @@ export function RegisterStudentForm({
         onChange={(event) => setSelectedCategoryCard(event.target.value)}
       />
 
-      <ItemInputForm
-        required
-        id="imt_id"
-        label="ID Escola"
-        type="text"
-        placeholder="ID Escola"
-      />
-
       <div className="flex justify-end">
         <Button title="Adicionar" type="submit" />
       </div>

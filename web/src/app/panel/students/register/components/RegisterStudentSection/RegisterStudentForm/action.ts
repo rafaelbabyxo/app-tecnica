@@ -11,7 +11,7 @@ export async function createStudent(data: FormData) {
     const number = data.get('student_number')?.toString()
     const birthDate = data.get('student_birth_date')?.toString()
     const date = data.get('student_date')?.toString()
-    const schoolId = data.get('student_register')?.toString()
+  const schoolId = data.get('student_register')?.toString()
     const driverLicenseCategoryId = data.get('category')?.toString()
     const imtId = data.get('imt_id')?.toString()
 
@@ -22,9 +22,10 @@ export async function createStudent(data: FormData) {
         ? String(new Date(birthDate!).toISOString())
         : undefined,
       enrolledAt: date ? String(new Date(date!).toISOString()) : undefined,
-      schoolId,
-      driverLicenseCategoryId,
-      imtId,
+  // schoolId, // não enviar schoolId
+  driverLicenseCategoryId,
+  schoolId,
+  // imtId,
     })
 
     revalidatePath('/panel/students/list')
