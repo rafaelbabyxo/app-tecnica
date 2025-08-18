@@ -33,7 +33,7 @@ export function EditDrivingExamForm({
   test,
   children,
 }: EditDrivingExamFormProps) {
-  const { register, control, watch, setValue, reset, handleSubmit } =
+  const { register, control, setValue, reset, handleSubmit } =
     useForm<EditDrivingExamFormInputs>({
       defaultValues: {
         testHour: test.testHour!,
@@ -42,10 +42,6 @@ export function EditDrivingExamForm({
       },
     })
   const { toast } = useToast()
-
-  const instructors = test.student.school.users?.filter(
-    (user) => user.function === 'INSTRUCTOR',
-  )
 
   async function handleEditDrivingExam(data: EditDrivingExamFormInputs) {
     const { message } = await editDrivingExam({
@@ -105,19 +101,6 @@ export function EditDrivingExamForm({
           className="w-28 rounded-lg border border-[#C6C6C6] px-2 outline-none"
         />
       </div>
-
-      <Select
-        placeHolder="Selecione o instrutor para o teste"
-        data={instructors?.map((instructor) => {
-          return {
-            label: instructor.name,
-            value: instructor.id,
-          }
-        })}
-        className="w-full"
-        value={watch('instructorId')}
-        onChange={(event) => setValue('instructorId', event.target.value)}
-      />
 
       {children}
     </form>

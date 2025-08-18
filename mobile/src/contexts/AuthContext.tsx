@@ -59,8 +59,8 @@ export function AuthProvider({ children }: AuthContextProviderProps) {
           });
         } else if (error.response?.data.message === errorMessages.studentNotFound) {
           Toast.show({
-            text1: 'Estudante não cadastrado',
-            text2: 'Não existe nenhum estudante cadastrado com esse número',
+            text1: 'Aluno não registado',
+            text2: 'Não existe nenhum aluno registado com esse número',
             type: 'error',
             visibilityTime: 8000
           });

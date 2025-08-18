@@ -52,8 +52,8 @@ export function EditStudentModal({
 
     if (message === 'Success!') {
       toast({
-        title: 'Dados do estudante atualizados!',
-        description: 'Todos os dados do estudante foram atualizados',
+        title: 'Dados do aluno atualizados!',
+        description: 'Todos os dados do aluno foram atualizados',
       })
     } else {
       toast({

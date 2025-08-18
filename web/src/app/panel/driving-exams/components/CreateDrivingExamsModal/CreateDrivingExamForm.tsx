@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-
 import { DialogFooter } from '@/components/ui/dialog'
 import { FormField } from '@/components/ui/form'
 import { InputModal } from '@/components/InputModal'
@@ -9,7 +7,6 @@ import { buttonVariants } from '@/components/ui/button'
 import { Button } from '@/components/Button'
 import { useToast } from '@/components/ui/use-toast'
 import { Combobox } from '@/components/ui/Combobox'
-import { Select } from '@/components/Select'
 
 import { cn } from '@/lib/utils'
 import { createDrivingExam } from './action'
@@ -44,22 +41,15 @@ export function CreateDrivingExamForm({
   students,
   setIsModalOpen,
 }: CreateDrivingExamFormProps) {
-  const [instructors, setInstructors] = useState<
-    { label: string; value: string }[]
-  >([])
-
   const {
     register,
     control,
     setValue,
-    watch,
     reset,
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<CreateDrivingExamFormInput>()
   const { toast } = useToast()
-
-  const studentId = watch('studentId')
 
   function handleCloseModal() {
     reset()
@@ -85,19 +75,13 @@ export function CreateDrivingExamForm({
     }
   }
 
-  useEffect(() => {
-    const student = students.find((student) => student.value === studentId)
-
-    const instructors = student?.school?.users?.filter(
-      (user) => user.function === 'INSTRUCTOR',
-    )
-
-    setInstructors(
-      instructors?.map((user) => {
-        return { label: user.name, value: user.id }
-      }) ?? [],
-    )
-  }, [studentId, students])
+  // useEffect(() => {
+  //   const student = students.find((student) => student.value === studentId)
+  //   const instructors = student?.school?.users?.filter(
+  //     (user) => user.function === 'INSTRUCTOR',
+  //   )
+  //   // setInstructors()
+  // }, [studentId, students])
 
   return (
     <form
@@ -106,15 +90,15 @@ export function CreateDrivingExamForm({
     >
       <fieldset>
         <label htmlFor="fileInput">
-          Selecione o estudante para marcar o exame de condução
+          Selecione o aluno para marcar o exame de condução
         </label>
 
         <Combobox
           data={students}
           onSelect={(value) => setValue('studentId', value)}
-          placeholder="Selecione um estudante"
-          inputPlaceholder="Digite o número do estudante"
-          emptyHeading="Estudante não encontrado."
+          placeholder="Selecione um aluno"
+          inputPlaceholder="Digite o número do aluno"
+          emptyHeading="Aluno não encontrado."
         />
       </fieldset>
 
@@ -122,14 +106,6 @@ export function CreateDrivingExamForm({
         placeholder="Local e hora de saída do exame"
         type="text"
         {...register('place')}
-      />
-
-      <Select
-        disabled={instructors.length === 0}
-        placeHolder="Selecione o instrutor"
-        data={instructors}
-        className="w-full lg:w-full"
-        onChange={(event) => setValue('instructorId', event.target.value)}
       />
 
       <div className="flex w-full gap-4">

@@ -105,11 +105,11 @@ export class PushNotificationService {
       })
 
       if (!student || !student.firebaseTokens || student.firebaseTokens.length === 0) {
-        console.log(`Nenhum token encontrado para o estudante ${studentId}`)
+        console.log(`Nenhum token encontrado para o aluno ${studentId}`)
         return
       }
 
-      console.log(`Enviando notificação para estudante ${studentId} com ${student.firebaseTokens.length} token(s)`)
+      console.log(`Enviando notificação para aluno ${studentId} com ${student.firebaseTokens.length} token(s)`)
 
       const promises = student.firebaseTokens.map(async (token) => {
         try {
@@ -137,7 +137,7 @@ export class PushNotificationService {
 
       await Promise.allSettled(promises)
     } catch (error) {
-      console.error('Erro geral ao enviar notificação para estudante:', error)
+      console.error('Erro geral ao enviar notificação para aluno:', error)
     }
   }
 
@@ -152,7 +152,7 @@ export class PushNotificationService {
         }
       })
 
-      // Remove o token de cada estudante
+      // Remove o token de cada aluno
       for (const student of students) {
         const updatedTokens = student.firebaseTokens.filter(t => t !== token)
         
@@ -162,7 +162,7 @@ export class PushNotificationService {
         })
       }
 
-      console.log(`Token ${token.substring(0, 20)}... removido de ${students.length} estudante(s)`)
+      console.log(`Token ${token.substring(0, 20)}... removido de ${students.length} aluno(s)`)
     } catch (error) {
       console.error(`Erro ao remover token inválido: ${error.message}`)
     }

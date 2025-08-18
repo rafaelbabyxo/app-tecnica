@@ -4,7 +4,6 @@ import { useState, SetStateAction, useEffect } from 'react'
 import { ChevronLeft, ChevronRight, User2 } from 'lucide-react'
 import useSWR from 'swr'
 import { format } from 'date-fns-tz'
-
 import { SearchInput } from '@/components/SearchInput'
 import { ScheduledDrivingLessonsTable } from './ScheduledDrivingLessonsTable'
 import { CreateScheduleDrivingClassModal } from './CreateScheduleDrivingClassModal'
@@ -151,7 +150,7 @@ export function ScheduledDrivingLessonsList({
       setTotal(data?.total)
       setScheduledClasses(formattedData)
     }
-  }, [data?.scheduledClasses])
+  }, [data?.scheduledClasses, data?.total])
 
   if (isLoading) {
     return (
@@ -169,15 +168,13 @@ export function ScheduledDrivingLessonsList({
             {userFunction !== 'INSTRUCTOR' && (
               <>
                 <CreateScheduleDrivingClassModal
-                  students={students?.map((student) => {
-                    return {
-                      label: student.name,
-                      value: student.id,
-                      number: String(student.number),
-                      vehicles: student.driverLicenseCategory?.vehicles,
-                      school: student.school,
-                    }
-                  })}
+                  students={students?.map((student) => ({
+                    label: student.name,
+                    value: student.id,
+                    number: String(student.number),
+                    vehicles: student.driverLicenseCategory?.vehicles,
+                    school: student.school,
+                  }))}
                 />
 
                 <CreateManyScheduleDrivingClassModal
@@ -336,28 +333,18 @@ export function ScheduledDrivingLessonsList({
                       <p className="flex items-center justify-between">
                         Escola: <span>{schedule?.student.school.name}</span>
                       </p>
-
                       <p className="flex items-center justify-between">
                         Data:{' '}
                         <span>
                           {schedule?.schedulingDate} {schedule?.schedulingHour}
                         </span>
                       </p>
-
                       <p className="flex items-center justify-between">
                         Título: <span>{schedule?.class?.name}</span>
                       </p>
-
                       <p className="flex items-center justify-between">
                         Veículo:{' '}
                         <span>{schedule?.vehicle ?? 'Não informado'}</span>
-                      </p>
-
-                      <p className="flex items-center justify-between">
-                        Instrutor:{' '}
-                        <span>
-                          {schedule?.instructor?.name ?? 'Não informado'}
-                        </span>
                       </p>
 
                       <p className="flex items-center justify-between">

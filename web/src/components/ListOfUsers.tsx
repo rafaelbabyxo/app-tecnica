@@ -89,14 +89,11 @@ export function ListOfUsers({ users }: ListOfUsersProps) {
                         Escola: <span>{user?.school?.name}</span>
                       </p>
 
-                      <p className="flex items-center justify-between">
-                        Função:{' '}
-                        <span>
-                          {user.function === 'ADMIN'
-                            ? 'ADMINISTRADOR'
-                            : 'INSTRUTOR'}
-                        </span>
-                      </p>
+                      {user.function === 'ADMIN' && (
+                        <p className="flex items-center justify-between">
+                          Função: <span>ADMINISTRADOR</span>
+                        </p>
+                      )}
 
                       <p className="flex items-center justify-between">
                         ID

@@ -40,7 +40,7 @@ export function StudentInfoModal({ student }: StudentInfoModalProps) {
             <div className="flex gap-x-4">
               <span className="text-lg">Telefone:</span>
               <strong className="text-lg">
-                {student.phone || 'Nenhum Telefone cadastrado'}
+                {student.phone || 'Nenhum Telefone registado'}
               </strong>
             </div>
 

@@ -48,13 +48,20 @@ export default function PracticalClasses() {
   // Estados para o calendário interativo
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [selectedTime, setSelectedTime] = useState<string>('')
-  const [currentMonth, setCurrentMonth] = useState(new Date())
-  
-  // Gerar dias do calendário
-  const calendarDays = eachDayOfInterval({
-    start: startOfWeek(startOfMonth(currentMonth)),
-    end: endOfWeek(endOfMonth(currentMonth))
-  })
+  const [currentMonth, setCurrentMonth] = useState<Date | null>(null)
+
+  // Corrige hydration: só define currentMonth no client
+  useEffect(() => {
+    if (!currentMonth) setCurrentMonth(new Date())
+  }, [currentMonth])
+
+  // Gerar dias do calendário (só quando currentMonth está definido)
+  const calendarDays = currentMonth
+    ? eachDayOfInterval({
+        start: startOfWeek(startOfMonth(currentMonth)),
+        end: endOfWeek(endOfMonth(currentMonth))
+      })
+    : []
 
   const { data: practicalClassesData, isLoading } = useQuery<ScheduledClass[]>(['practical-classes'], async () => {
     try {
@@ -113,7 +120,7 @@ export default function PracticalClasses() {
   }, [student, router])
 
   // Show loading while checking authentication
-  if (!student) {
+  if (!student || !currentMonth) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div>Carregando...</div>
@@ -225,13 +232,12 @@ export default function PracticalClasses() {
                 📅 Agendar Aula Prática
               </h2>
               <p className="text-gray-600 text-sm">
-                {format(currentMonth, 'MMMM yyyy')}
+                {currentMonth ? format(currentMonth, 'MMMM yyyy') : ''}
               </p>
             </div>
-            
             <div className="flex gap-2">
               <button
-                onClick={() => setCurrentMonth(addDays(currentMonth, -30))}
+                onClick={() => currentMonth && setCurrentMonth(addDays(currentMonth, -30))}
                 className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                 title="Mês anterior"
               >
@@ -244,7 +250,7 @@ export default function PracticalClasses() {
                 Hoje
               </button>
               <button
-                onClick={() => setCurrentMonth(addDays(currentMonth, 30))}
+                onClick={() => currentMonth && setCurrentMonth(addDays(currentMonth, 30))}
                 className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                 title="Próximo mês"
               >
@@ -253,21 +259,21 @@ export default function PracticalClasses() {
             </div>
           </div>
           
-          {/* Legenda */}
-          <div className="flex gap-4 mb-4 text-sm">
-            <div className="flex items-center gap-1">
+          {/* Legenda - responsiva e centralizada, sem min-w customizadas */}
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mb-4 text-sm sm:justify-start">
+            <div className="flex items-center gap-1 px-2 justify-center">
               <div className="w-3 h-3 bg-green-500 rounded"></div>
               <span>Aula agendada</span>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 px-2 justify-center">
               <div className="w-3 h-3 bg-blue-500 rounded"></div>
               <span>Hoje</span>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 px-2 justify-center">
               <div className="w-3 h-3 bg-orange-500 rounded"></div>
               <span>Selecionado</span>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 px-2 justify-center">
               <div className="w-3 h-3 bg-gray-300 rounded"></div>
               <span>Indisponível</span>
             </div>

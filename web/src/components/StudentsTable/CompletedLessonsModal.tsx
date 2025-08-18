@@ -60,7 +60,7 @@ export function CompletedLessonsModal({
           <AlertDialogHeader>
             <div className="flex flex-col items-start gap-y-3">
               <div className="mt-4 flex gap-x-4">
-                <span className="text-lg">Aulas de código completadas:</span>
+                <span className="text-lg">Aulas de código completas:</span>
                 <strong className="text-lg">{completedCodeLessons}</strong>
               </div>
 
@@ -68,7 +68,7 @@ export function CompletedLessonsModal({
                 ([vehicle, count]) => (
                   <div className="flex gap-x-4" key={vehicle}>
                     <span className="text-lg">
-                      Aulas de condução completadas ({vehicle}):
+                      Aulas de condução completas ({vehicle}):
                     </span>
                     <strong className="text-lg">{count}</strong>
                   </div>
@@ -104,12 +104,12 @@ export function CompletedLessonsModal({
           <AlertDialogHeader>
             <div className="flex flex-col items-start gap-y-3">
               <div className="mt-4 flex gap-x-4">
-                <span className="text-lg">Aulas de código completadas:</span>
+                <span className="text-lg">Aulas de código completas:</span>
                 <strong className="text-lg">{completedCodeLessons}</strong>
               </div>
 
               <div className="flex gap-x-4">
-                <span className="text-lg">Aulas de condução completadas:</span>
+                <span className="text-lg">Aulas de condução completas:</span>
                 <strong className="text-lg">{completedPracticalLessons}</strong>
               </div>
             </div>

@@ -4,7 +4,6 @@ export function SelectFunction() {
   const userFunction = [
     { label: 'Administrativo(a)', value: 'ADMIN' },
     { label: 'Diretor', value: 'DIRECTOR' },
-    { label: 'Instrutor(a)', value: 'INSTRUCTOR' },
   ]
 
   return (

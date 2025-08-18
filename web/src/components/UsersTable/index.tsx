@@ -57,7 +57,7 @@ export function UsersTable({ users }: UsersTableProps) {
                 </TableCell>
                 <TableCell>{user.name}</TableCell>
                 <TableCell>
-                  {user.function === 'ADMIN' ? 'ADMINISTRADOR' : 'INSTRUTOR'}
+                  {user.function === 'ADMIN' ? 'ADMINISTRADOR' : ''}
                 </TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.createdAt as any}</TableCell>

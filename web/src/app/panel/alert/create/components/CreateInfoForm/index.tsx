@@ -28,8 +28,8 @@ export function CreateInfoForm({ userFunction, schools }: CreateInfoFormProps) {
       formRef?.current?.reset()
 
       toast({
-        title: 'Novo alerta cadastrado!',
-        description: 'Alerta cadastrado com sucesso!',
+        title: 'Novo alerta registado!',
+        description: 'Alerta registado com sucesso!',
       })
     } else {
       toast({

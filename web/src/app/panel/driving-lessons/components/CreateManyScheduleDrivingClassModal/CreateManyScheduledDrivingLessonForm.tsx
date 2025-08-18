@@ -71,15 +71,15 @@ export function CreateManyScheduledDrivingLessonForm({
     >
       <fieldset>
         <label htmlFor="fileInput" className="text-sm">
-          Selecione o estudante para marcar a aula
+          Selecione o aluno para marcar a aula
         </label>
 
         <Combobox
           data={students}
           onSelect={(value) => setValue('studentId', value)}
-          placeholder="Selecione um estudante"
-          inputPlaceholder="Digite o número do estudante"
-          emptyHeading="Estudante não encontrado."
+          placeholder="Selecione um aluno"
+          inputPlaceholder="Digite o número do aluno"
+          emptyHeading="Aluno não encontrado."
         />
       </fieldset>
 

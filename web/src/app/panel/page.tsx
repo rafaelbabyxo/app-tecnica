@@ -3,7 +3,6 @@ export default function PanelPage() {
     <main className="mb-16 mt-14 flex w-full flex-col gap-6 px-4 lg:max-w-[80vw] lg:px-0">
       <h1 className="text-xl">Painel Administrativo</h1>
       <div className="mx-auto -mt-5 h-[1px] w-full max-w-[1440px] bg-[#BFBFBF]" />
-
       <section className="w-full max-w-7xl lg:pl-10">
         <h2 className="mb-6 mt-6 text-lg font-medium">
           Bem-vindo ao Sistema de Gestão
@@ -50,15 +49,6 @@ export default function PanelPage() {
             </h3>
             <p className="text-gray-600">
               Gerir utilizadores e permissões do sistema.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-            <h3 className="mb-2 text-lg font-semibold text-gray-900">
-              Agenda dos Instrutores
-            </h3>
-            <p className="text-gray-600">
-              Visualizar e organizar a agenda dos instrutores.
             </p>
           </div>
         </div>

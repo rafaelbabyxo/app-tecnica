@@ -42,8 +42,8 @@ export function RegisterStudentForm({
       setSelectedCategoryCard(undefined)
 
       toast({
-        title: 'Estudante cadastrado!',
-        description: 'Estudante cadastrado com sucesso!',
+        title: 'Aluno registado!',
+        description: 'Aluno registado com sucesso!',
       })
     } else {
       toast({

@@ -144,11 +144,6 @@ export function CodeExamsList({
                               : 'MARCADO'}
                         </span>
                       </p>
-
-                      <p className="flex items-center justify-between">
-                        Instrutor:{' '}
-                        <span>{exam?.instructor?.name ?? 'Não informado'}</span>
-                      </p>
                     </div>
                     <div className="mt-4 flex gap-4">
                       <EditCodeExamModal test={exam} />

@@ -30,7 +30,6 @@ export function ScheduledDrivingLessonsTable({
             <TableHead>Info aluno</TableHead>
             <TableHead>Veículo</TableHead>
             <TableHead>Escola</TableHead>
-            <TableHead>Instrutor</TableHead>
             <TableHead>Justificação</TableHead>
             <TableHead>Editar</TableHead>
             <TableHead>Apagar</TableHead>
@@ -62,9 +61,6 @@ export function ScheduledDrivingLessonsTable({
               </TableCell>
               <TableCell>{scheduledClass.vehicle ?? 'Não informado'}</TableCell>
               <TableCell>{scheduledClass.student.school.name}</TableCell>
-              <TableCell>
-                {scheduledClass?.instructor?.name ?? 'Não informado'}
-              </TableCell>
               <TableCell>
                 {scheduledClass?.justification ?? 'Não informado'}
               </TableCell>

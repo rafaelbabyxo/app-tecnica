@@ -1,4 +1,5 @@
 import { usePathname } from 'next/navigation'
+import { format } from 'date-fns-tz'
 import { Copy } from 'lucide-react'
 
 import {
@@ -86,7 +87,24 @@ export function StudentsTable({
                 <TableCell>{student.name}</TableCell>
                 <TableCell>{student.number}</TableCell>
                 <TableCell>{student.email}</TableCell>
-                <TableCell>{student.enrolledAt}</TableCell>
+                <TableCell>
+                  {(() => {
+                    if (
+                      !student.enrolledAt ||
+                      student.enrolledAt === 'Não informado'
+                    )
+                      return 'Não informado'
+                    // Se já está no formato dd/MM/yyyy, retorna direto
+                    if (/^\d{2}\/\d{2}\/\d{4}$/.test(student.enrolledAt))
+                      return student.enrolledAt
+                    // Se vier em outro formato, tenta converter
+                    const date = new Date(student.enrolledAt)
+                    if (!isNaN(date.getTime())) {
+                      return format(date, 'dd/MM/yyyy')
+                    }
+                    return student.enrolledAt
+                  })()}
+                </TableCell>
                 <TableCell>{student.school.name}</TableCell>
                 <TableCell align="center">
                   <CompletedLessonsModal

@@ -72,8 +72,8 @@ export function AuthProvider({ children }: AuthContextProviderProps) {
           })
         } else if (error.response?.data.message === errorMessages.studentNotFound) {
           toast({
-            title: "Estudante não cadastrado",
-            description: "Não existe nenhum estudante cadastrado com esse número",
+            title: "Aluno não registado",
+            description: "Não existe nenhum aluno registado com esse número",
             variant: 'destructive'
           })
         } else if (error.response?.data.message === errorMessages.incorrectPassword) {

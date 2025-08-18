@@ -91,7 +91,7 @@ export function EditStudentForm({
       <div className="flex gap-4">
         <Select
           id="school"
-          placeHolder="Escola de registro"
+          placeHolder="Escola de registo"
           data={schools}
           className="w-full"
           onChange={(event) => setValue('student_school', event.target.value)}

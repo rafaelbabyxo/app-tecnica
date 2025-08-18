@@ -1,6 +1,5 @@
 import { ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
-
 import { InputModal } from '@/components/InputModal'
 import { DatePicker } from '@/components/ui/date-picker'
 import { FormField } from '@/components/ui/form'
@@ -30,7 +29,7 @@ const testStatus = [
 ]
 
 export function EditCodeExamForm({ test, children }: EditCodeExamFormProps) {
-  const { register, control, setValue, watch, reset, handleSubmit } =
+  const { register, control, setValue, reset, handleSubmit } =
     useForm<EditCodeExamInputs>({
       defaultValues: {
         testHour: test.testHour!,
@@ -39,10 +38,6 @@ export function EditCodeExamForm({ test, children }: EditCodeExamFormProps) {
       },
     })
   const { toast } = useToast()
-
-  const instructors = test.student.school.users?.filter(
-    (user) => user.function === 'INSTRUCTOR',
-  )
 
   async function handleEditCodeExam(data: EditCodeExamInputs) {
     const { message } = await editCodeExam({
@@ -102,19 +97,6 @@ export function EditCodeExamForm({ test, children }: EditCodeExamFormProps) {
           className="w-28 rounded-lg border border-[#C6C6C6] px-2 outline-none"
         />
       </div>
-
-      <Select
-        placeHolder="Selecione o instrutor para o teste"
-        data={instructors?.map((instructor) => {
-          return {
-            label: instructor.name,
-            value: instructor.id,
-          }
-        })}
-        className="w-full"
-        value={watch('instructorId')}
-        onChange={(event) => setValue('instructorId', event.target.value)}
-      />
 
       {children}
     </form>

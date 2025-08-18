@@ -93,9 +93,6 @@ export function CreateScheduledDrivingLessonForm({
   const { toast } = useToast()
 
   const [vehicles, setVehicles] = useState<string[]>([])
-  const [instructors, setInstructors] = useState<
-    { label: string; value: string }[]
-  >([])
 
   function handleAddLessonIntoArray(lesson: Lesson) {
     append(lesson)
@@ -144,18 +141,7 @@ export function CreateScheduledDrivingLessonForm({
     const student = students.find((student) => student.value === studentId)
 
     setVehicles(student?.vehicles ?? [])
-
-    const instructors = student?.school?.users?.filter(
-      (user) => user.function === 'INSTRUCTOR',
-    )
-
-    setInstructors(
-      instructors?.map((user) => {
-        return { label: user.name, value: user.id }
-      }) ?? [],
-    )
   }, [studentId, students])
-
   return (
     <form
       onSubmit={handleSubmit(handleCreateScheduledDrivingLessonForm)}
@@ -178,15 +164,15 @@ export function CreateScheduledDrivingLessonForm({
 
       <fieldset>
         <label htmlFor="fileInput" className="text-sm">
-          Selecione o estudante para marcar a aula
+          Selecione o aluno para marcar a aula
         </label>
 
         <Combobox
           data={students}
           onSelect={(value) => setValue('studentId', value)}
-          placeholder="Selecione um estudante"
-          inputPlaceholder="Digite o número do estudante"
-          emptyHeading="Estudante não encontrado."
+          placeholder="Selecione um aluno"
+          inputPlaceholder="Digite o número do aluno"
+          emptyHeading="Aluno não encontrado."
         />
       </fieldset>
 
@@ -219,14 +205,6 @@ export function CreateScheduledDrivingLessonForm({
         })}
         className="w-full lg:w-full"
         onChange={(event) => setValue('vehicle', event.target.value)}
-      />
-
-      <Select
-        disabled={instructors.length === 0}
-        placeHolder="Selecione o instrutor"
-        data={instructors}
-        className="w-full lg:w-full"
-        onChange={(event) => setValue('instructorId', event.target.value)}
       />
       {fields && fields?.length > 0 && (
         <ScrollArea className="h-24">
