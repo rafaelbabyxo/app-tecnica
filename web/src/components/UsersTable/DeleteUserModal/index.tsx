@@ -31,8 +31,8 @@ export function DeleteUserModal({ user, trigger }: DeleteUserModalProps) {
 
     if (message === 'Success!') {
       toast({
-        title: 'Utilizador deletado!',
-        description: 'Utilizador deletado com sucesso!',
+        title: 'Utilizador Apagado!',
+        description: 'Utilizador Apagado com sucesso!',
       })
     } else {
       toast({

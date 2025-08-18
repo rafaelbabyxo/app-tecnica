@@ -28,7 +28,7 @@ export async function updateInfo(data: FormData, informationId: string) {
         ) {
           return {
             message:
-              'Alerta não encontrado! Parece que esse alerta já foi deletado!',
+              'Alerta não encontrado! Parece que esse alerta já foi Apagado!',
           }
         } else if (
           error.response?.data.message[0] === errorMessages.descriptionShorter

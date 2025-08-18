@@ -17,7 +17,7 @@ export async function deleteDrivingExam(testId: string) {
       if (error.response?.data?.message) {
         if (error.response?.data.message === errorMessages.testNotFound) {
           return {
-            message: 'Parece que esse exame de condução já foi deletado!',
+            message: 'Parece que esse exame de condução já foi Apagado!',
           }
         }
       } else {

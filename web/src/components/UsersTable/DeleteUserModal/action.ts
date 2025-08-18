@@ -18,7 +18,7 @@ export async function deleteUser(userId: string) {
         if (error.response?.data.message === errorMessages.userNotFound) {
           return {
             message:
-              'Utilizador não encontrado! Parece que esse utilizador já foi deletado!',
+              'Utilizador não encontrado! Parece que esse utilizador já foi Apagado!',
           }
         }
       }

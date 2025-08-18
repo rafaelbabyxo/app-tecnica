@@ -18,7 +18,7 @@ export async function deleteStudent(studentId: string) {
         if (error.response?.data.message === errorMessages.studentNotFound) {
           return {
             message:
-              'Parece que esse estudante já foi deletado, por favor atualize a página',
+              'Parece que esse estudante já foi Apagado, por favor atualize a página',
           }
         }
       } else {

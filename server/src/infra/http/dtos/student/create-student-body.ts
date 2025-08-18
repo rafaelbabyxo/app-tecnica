@@ -3,10 +3,12 @@ import { IsNotEmpty, IsNumber, IsUUID } from 'class-validator'
 
 export class CreateStudentBody {
   @IsNotEmpty()
+
   name: string
 
 
-  email?: string
+  @IsNotEmpty()
+  email: string
 
   @IsNotEmpty()
   @IsUUID()
@@ -18,6 +20,7 @@ export class CreateStudentBody {
 
   @IsNotEmpty()
   @IsNumber()
+
   number: number
 
 

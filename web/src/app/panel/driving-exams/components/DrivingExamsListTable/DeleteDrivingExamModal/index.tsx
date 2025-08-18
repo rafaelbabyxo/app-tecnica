@@ -32,8 +32,8 @@ export function DeleteDrivingExamModal({
 
     if (message === 'Success!') {
       toast({
-        title: 'Exame de condução deletado!',
-        description: 'O exame de condução foi deletado com sucesso',
+        title: 'Exame de condução Apagado!',
+        description: 'O exame de condução foi Apagado com sucesso',
       })
     } else {
       toast({

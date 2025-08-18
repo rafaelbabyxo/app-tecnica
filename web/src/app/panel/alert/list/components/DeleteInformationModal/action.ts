@@ -20,7 +20,7 @@ export async function deleteInfo(informationId: string) {
         ) {
           return {
             message:
-              'Alerta não encontrado! Parece que esse alerta já foi deletado!',
+              'Alerta não encontrado! Parece que esse alerta já foi Apagado!',
           }
         }
       }

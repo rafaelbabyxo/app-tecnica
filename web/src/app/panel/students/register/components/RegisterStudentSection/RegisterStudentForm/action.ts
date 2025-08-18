@@ -7,20 +7,24 @@ import { errorMessages } from '@/utils/errors/errorMessages'
 
 export async function createStudent(data: FormData) {
   try {
-    const name = data.get('student_name')?.toString()
-    const number = data.get('student_number')?.toString()
-    const birthDate = data.get('student_birth_date')?.toString()
-    const date = data.get('student_date')?.toString()
-    const schoolId = data.get('student_register')?.toString()
-    const driverLicenseCategoryId = data.get('category')?.toString()
+  const name = data.get('student_name')?.toString()
+  const email = data.get('student_email')?.toString()
+  const number = data.get('student_number')?.toString()
+  const birthDate = data.get('student_birth_date')?.toString()
+  // Data de inscrição no formato local de Portugal (YYYY-MM-DD)
+  const now = new Date()
+  const enrolledAt = now.toLocaleDateString('pt-PT', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll('/', '-')
+  const schoolId = data.get('student_register')?.toString()
+  const driverLicenseCategoryId = data.get('category')?.toString()
 
     await api.post(`/student`, {
       name,
+      email,
       number: Number(number),
       birthDate: birthDate
         ? String(new Date(birthDate!).toISOString())
         : undefined,
-      enrolledAt: date ? String(new Date(date!).toISOString()) : undefined,
+  enrolledAt,
       driverLicenseCategoryId,
       schoolId,
     })

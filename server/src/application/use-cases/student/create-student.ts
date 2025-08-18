@@ -88,6 +88,7 @@ export class CreateStudent {
         student,
       }
     } catch (error) {
+      console.error('Erro ao criar aluno:', error)
       if (error) throw error
       throw new InternalServerErrorException()
     }

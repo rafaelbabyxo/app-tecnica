@@ -33,8 +33,8 @@ export function DeleteCodeExamModal({
 
     if (message === 'Success!') {
       toast({
-        title: 'Exame de código deletado!',
-        description: 'O exame de código foi deletado com sucesso',
+        title: 'Exame de código Apagado!',
+        description: 'O exame de código foi Apagado com sucesso',
       })
     } else {
       toast({

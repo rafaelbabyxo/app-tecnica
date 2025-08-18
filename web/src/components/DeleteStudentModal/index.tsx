@@ -34,8 +34,8 @@ export function DeleteStudentModal({
 
     if (message === 'Success!') {
       toast({
-        title: 'Estudante Deletado!',
-        description: 'Estudante deletado com sucesso!',
+        title: 'Estudante Apagado!',
+        description: 'Estudante Apagado com sucesso!',
       })
     } else {
       toast({

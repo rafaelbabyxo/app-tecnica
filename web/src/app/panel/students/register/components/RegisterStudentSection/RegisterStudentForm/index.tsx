@@ -80,6 +80,14 @@ export function RegisterStudentForm({
 
       <ItemInputForm
         required
+        id="student_email"
+        label="Email do Aluno"
+        type="email"
+        placeholder="Email do Aluno"
+      />
+
+      <ItemInputForm
+        required
         id="student_number"
         label="Número do Aluno"
         type="number"
@@ -87,20 +95,13 @@ export function RegisterStudentForm({
       />
 
       {/* <ItemInputForm
-        required
         id="student_birth_date"
         label="Data de nascimento do aluno"
         type="date"
         placeholder="Data de nascimento"
       /> */}
 
-      {/* <ItemInputForm
-        required
-        id="student_date"
-        label="Data de inscrição do Aluno"
-        type="date"
-        placeholder="Data de Inscrição"
-      /> */}
+  {/* Data de inscrição é preenchida automaticamente no backend/front, não aparece no formulário */}
 
       <ItemSelectForm
         required
