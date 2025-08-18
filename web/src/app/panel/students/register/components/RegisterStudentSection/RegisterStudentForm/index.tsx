@@ -1,12 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 import { useRef, useState } from 'react'
-
 import { Button } from '@/components/Button'
 import { ItemInputForm } from '@/components/ItemInputForm'
 import { ItemSelectForm } from '@/components/ItemSelectForm'
 import { useToast } from '@/components/ui/use-toast'
-
 import { createStudent } from './action'
 
 interface RegisterStudentFormProps {
@@ -28,7 +25,7 @@ export function RegisterStudentForm({
   const { toast } = useToast()
   const formRef = useRef<HTMLFormElement>(null)
 
-  const [categoryCardState, setCategoryCardState] = useState(categoryCard)
+  const [categoryCardState] = useState(categoryCard)
   const [selectedSchool, setSelectedSchool] = useState<undefined | string>(
     undefined,
   )
@@ -101,7 +98,7 @@ export function RegisterStudentForm({
         placeholder="Data de nascimento"
       /> */}
 
-  {/* Data de inscrição é preenchida automaticamente no backend/front, não aparece no formulário */}
+      {/* Data de inscrição é preenchida automaticamente no backend/front, não aparece no formulário */}
 
       <ItemSelectForm
         required

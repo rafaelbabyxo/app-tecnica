@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { addDays } from 'date-fns'
 import { format } from 'date-fns-tz'
 
 import { api } from '@/lib/api'
